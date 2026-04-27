@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registration Form Validation</title>
+
+    <script>
+        function validateForm() {
+
+            var fname = document.getElementById("fname").value;
+            var lname = document.getElementById("lname").value;
+            var password = document.getElementById("password").value;
+            var email = document.getElementById("email").value;
+            var mobile = document.getElementById("mobile").value;
+            var address = document.getElementById("address").value;
+
+            var namePattern = /^[A-Za-z]+$/;
+            var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}$/;
+            var mobilePattern = /^[0-9]{10}$/;
+
+            // First Name Validation
+            if (!fname.match(namePattern) || fname.length < 6) {
+                alert("First Name must contain only alphabets and minimum 6 characters");
+                return false;
+            }
+
+            // Password Validation
+            if (password.length < 6) {
+                alert("Password must be at least 6 characters long");
+                return false;
+            }
+
+            // Email Validation
+            if (!email.match(emailPattern)) {
+                alert("Enter a valid Email ID");
+                return false;
+            }
+
+            // Mobile Number Validation
+            if (!mobile.match(mobilePattern)) {
+                alert("Mobile number must contain exactly 10 digits");
+                return false;
+            }
+
+            // Last Name Validation
+            if (lname == "") {
+                alert("Last Name should not be empty");
+                return false;
+            }
+
+            // Address Validation
+            if (address == "") {
+                alert("Address should not be empty");
+                return false;
+            }
+
+            alert("Registration Successful!");
+            return true;
+        }
+    </script>
+</head>
+
+<body>
+
+<h2>Registration Form</h2>
+
+<form onsubmit="return validateForm()">
+
+    First Name:
+    <input type="text" id="fname"><br><br>
+
+    Last Name:
+    <input type="text" id="lname"><br><br>
+
+    Password:
+    <input type="password" id="password"><br><br>
+
+    E-mail:
+    <input type="text" id="email"><br><br>
+
+    Mobile Number:
+    <input type="text" id="mobile"><br><br>
+
+    Address:
+    <textarea id="address"></textarea><br><br>
+
+    <input type="submit" value="Register">
+
+</form>
+
+</body>
+</html>

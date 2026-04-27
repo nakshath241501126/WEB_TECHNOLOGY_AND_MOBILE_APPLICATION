@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/sampleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello, World!!!!!!"
+        android:textSize="28sp"
+        android:textColor="#000000"
+        android:fontFamily="@font/roboto_regular"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/changeStyleButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.4"/>
+
+    <Button
+        android:id="@+id/changeStyleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Change Style &amp; Color"
+        app:layout_constraintTop_toBottomOf="@id/sampleText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+package com.example.font_change;
+
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
+
+public class MainActivity extends AppCompatActivity {
+
+    private TextView sampleText;
+    private Button changeStyleButton;
+    private boolean isChanged = false;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        sampleText = findViewById(R.id.sampleText);
+        changeStyleButton = findViewById(R.id.changeStyleButton);
+
+        changeStyleButton.setOnClickListener(v -> {
+            if (!isChanged) {
+                // Apply New Style
+                sampleText.setTextColor(Color.parseColor("#FF5722")); // Vibrant Orange
+                
+                // Load font safely using ResourcesCompat
+                Typeface typeface = ResourcesCompat.getFont(this, R.font.roboto_regular);
+                sampleText.setTypeface(typeface, Typeface.BOLD_ITALIC);
+
+                Toast.makeText(this, "Font & Color Changed!", Toast.LENGTH_SHORT).show();
+            } else {
+                // Reset to Default
+                sampleText.setTextColor(Color.BLACK);
+                sampleText.setTypeface(Typeface.DEFAULT, Typeface.NORMAL);
+
+                Toast.makeText(this, "Back to Default!", Toast.LENGTH_SHORT).show();
+            }
+            
+            // Toggle the state
+            isChanged = !isChanged;
+        });
+    }
+}

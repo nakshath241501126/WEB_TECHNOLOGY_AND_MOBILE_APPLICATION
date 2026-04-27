@@ -1,0 +1,28 @@
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+// This annotation maps the Servlet to the URL pattern "/hello"
+@WebServlet("/hello")
+public class HelloWorldServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        
+        // 1. Set the content type of the response
+        response.setContentType("text/html");
+
+        // 2. Get the PrintWriter object to write the response
+        PrintWriter out = response.getWriter();
+
+        // 3. Print the message to the browser
+        out.println("<html><body>");
+        out.println("<h1>Hello, World!</h1>");
+        out.println("</body></html>");
+    }
+}

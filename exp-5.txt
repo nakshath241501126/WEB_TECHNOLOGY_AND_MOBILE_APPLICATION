@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Information Form</title>
+</head>
+<body>
+    <h2>Enter Your Details</h2>
+    <form action="UserServlet" method="POST">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required><br><br>
+        
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
+#servlet
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+// Mapping the Servlet to the URL mentioned in the HTML form action
+@WebServlet("/UserServlet")
+public class UserServlet extends HttpServlet {
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        
+        // Set the response content type
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        try {
+            // 1. Retrieve the parameters from the request
+            String name = request.getParameter("name");
+            String ageStr = request.getParameter("age");
+
+            // 2. Validate the input
+            int age = Integer.parseInt(ageStr);
+
+            // 3. Send the response back to the browser
+            out.println("<html><body>");
+            out.println("<h1>Submission Successful</h1>");
+            out.println("<p>Hello, <strong>" + name + "</strong>!</p>");
+            out.println("<p>You are <strong>" + age + "</strong> years old.</p>");
+            out.println("<br><a href='index.html'>Back to Form</a>");
+            out.println("</body></html>");
+
+        } catch (NumberFormatException e) {
+            // Handle cases where age is not a valid number
+            out.println("<html><body>");
+            out.println("<h3 style='color:red;'>Error: Please enter a valid age.</h3>");
+            out.println("<a href='index.html'>Try Again</a>");
+            out.println("</body></html>");
+        }
+    }
+}

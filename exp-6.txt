@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Page</title>
+</head>
+<body>
+    <h2>Login to Your Account</h2>
+    <form action="LoginServlet" method="POST">
+        Username: <input type="text" name="username" required><br><br>
+        Password: <input type="password" name="password" required><br><br>
+        <input type="submit" value="Login">
+    </form>
+</body>
+</html>
+#servlet
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+
+@WebServlet("/LoginServlet")
+public class LoginServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        
+        String user = request.getParameter("username");
+        String pass = request.getParameter("password");
+
+        // Simple hardcoded authentication
+        if (user.equals("admin") && pass.equals("12345")) {
+            // Create a new session or get the existing one
+            HttpSession session = request.getSession();
+            session.setAttribute("user", user);
+            
+            // Set session timeout to 30 minutes
+            session.setMaxInactiveInterval(30 * 60); 
+
+            // Redirect to the protected dashboard
+            response.sendRedirect("DashboardServlet");
+        } else {
+            // Redirect back to login on failure
+            response.sendRedirect("login.html");
+        }
+    }
+}

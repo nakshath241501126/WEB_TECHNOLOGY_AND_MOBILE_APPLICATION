@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HTTP GET vs POST Demo</title>
+</head>
+<body>
+    <h2>User Submission Form</h2>
+
+    <h3>Submit using GET</h3>
+    <form action="DataServlet" method="GET">
+        Name: <input type="text" name="userName"><br><br>
+        Email: <input type="email" name="userEmail"><br><br>
+        <input type="submit" value="Submit via GET">
+    </form>
+
+    <hr>
+
+    <h3>Submit using POST</h3>
+    <form action="DataServlet" method="POST">
+        Name: <input type="text" name="userName"><br><br>
+        Email: <input type="email" name="userEmail"><br><br>
+        <input type="submit" value="Submit via POST">
+    </form>
+</body>
+</html>
+
+#servlet
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/DataServlet")
+public class DataServlet extends HttpServlet {
+
+    // Handling GET Requests
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        processRequest(request, response, "GET");
+    }
+
+    // Handling POST Requests
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        processRequest(request, response, "POST");
+    }
+
+    // Helper method to avoid code duplication
+    private void processRequest(HttpServletRequest request, HttpServletResponse response, String method) 
+            throws IOException {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        // Retrieve parameters from the request
+        String name = request.getParameter("userName");
+        String email = request.getParameter("userEmail");
+
+        out.println("<html><body>");
+        out.println("<h1>Submission Result (" + method + ")</h1>");
+        out.println("<p><strong>Name:</strong> " + name + "</p>");
+        out.println("<p><strong>Email:</strong> " + email + "</p>");
+        
+        if (method.equals("GET")) {
+            out.println("<p style='color:blue;'>Note: Look at your browser address bar! Your data is appended to the URL.</p>");
+        } else {
+            out.println("<p style='color:green;'>Note: The URL remains clean. Data was sent in the HTTP Request Body.</p>");
+        }
+        
+        out.println("<a href='index.html'>Back to Form</a>");
+        out.println("</body></html>");
+    }
+}
